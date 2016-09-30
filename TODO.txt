@@ -1,0 +1,7 @@
+- Convert button, led, serial and timer libraries to Contiki (integrate them into the rfa1 cpu and platform Contiki folders and use from there). See cpu/mc1322x for files for a good example of how to write the inner functions.
+
+- Rewrite the SerialRelay file to use these new functions.
+
+- Look at the French student's SX files, see if that can be also directly integrated into Contiki.
+
+
