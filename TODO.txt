@@ -4,6 +4,9 @@
 
 - Look at the French student's SX files, see if that can be also directly integrated into Contiki.
 
-- leds is converted, but:
-    the functions are in leds-arch.c, in the cpu/avr folder. It would be better if the functions could be in the platform/avr-atmega128rfa1 folder.
+- leds and button are converted, but:
+    the functions are in the cpu/avr folder. It would be better if the functions could be in the platform/avr-atmega128rfa1 folder.
     the functions use variables in the <avr/io.h> file - the necessary ones should be extracted from there and defined in the file itself.
+    there's a sort of event-based button functionality already built into Contiki, and the way I've implemented the button doesn't use that.
+
+  working on serial now, not as straightforward as the initial libraries
