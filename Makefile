@@ -5,7 +5,7 @@ all: $(CONTIKI_PROJECT)
 
 CFLAGS += -g
 
-PROJECT_LIBRARIES += ./libs/lbutton.a
+#PROJECT_LIBRARIES += ./libs/lbutton.a
 
 PROJECT_LIBRARIES +=  ./libs/lserial.a
 

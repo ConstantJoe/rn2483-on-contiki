@@ -32,12 +32,13 @@
 #include "watchdog.h"
 
 #include "libs/serial.h"
-//#include "libs/leds.h"
 #include "libs/timer.h"
-#include "libs/button.h"
+//#include "libs/leds.h"
+//#include "libs/button.h"
 
+//files located in avr/cpu folder of contiki
 #include "dev/leds.h"
-//#include "dev/button.h"
+#include "dev/button.h"
 
 #define true 1
 
@@ -49,6 +50,8 @@ AUTOSTART_PROCESSES(&example_process);
 PROCESS_THREAD(example_process, ev, data)
 {
 	PROCESS_BEGIN();
+
+	//SENSORS_ACTIVATE(button_sensor);
 
 	watchdog_stop(); // stop contiki rebooting
 
@@ -88,24 +91,33 @@ PROCESS_THREAD(example_process, ev, data)
 			serial_put(0,ch);
 		}
 
-		// if button pressed, write a message
-		if (button_pressed()) {
+		//PROCESS_WAIT_EVENT();
+
+		/*if(ev == sensors_event && data == &button_sensor) {*/
+		if(button_pressed())
+		{
 			if (echo) {
 				serial_puts(0, "\n\rEcho disabled\n\r");
 				echo = false;
-                leds_toggle(LEDS_GREEN);
-                leds_toggle(LEDS_YELLOW);
-                leds_toggle(LEDS_RED);
+                leds_on(LEDS_GREEN);
+                leds_on(LEDS_YELLOW);
+                leds_on(LEDS_RED);
 			}
 			else {
 				serial_puts(0, "\n\rEcho enabled\n\r");
 				echo = true;
-				/*leds_off(LEDS_GREEN);
+				leds_off(LEDS_GREEN);
                 leds_off(LEDS_YELLOW);
-                leds_off(LEDS_RED);*/
+                leds_off(LEDS_RED);
 			}				
 			while (!button_released());
-		}			
+		}
+           
+
+		// if button pressed, write a message
+		//if (button_pressed()) {
+			
+		//}			
 
 	}
 
