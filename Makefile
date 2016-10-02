@@ -9,7 +9,7 @@ PROJECT_LIBRARIES += ./libs/lbutton.a
 
 PROJECT_LIBRARIES +=  ./libs/lserial.a
 
-PROJECT_LIBRARIES +=  ./libs/lleds.a
+#PROJECT_LIBRARIES +=  ./libs/lleds.a
 
 PROJECT_LIBRARIES +=  ./libs/ltimer.a
 
