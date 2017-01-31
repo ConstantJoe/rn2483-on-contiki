@@ -1,20 +1,11 @@
-- Convert button, led, serial and timer libraries to Contiki (integrate them into the rfa1 cpu and platform Contiki folders and use from there). See cpu/mc1322x for files for a good example of how to write the inner functions.
-
-- Rewrite the SerialRelay file to use these new functions.
-
-- Look at the French student's SX files, see if that can be also directly integrated into Contiki.
-
-- leds and button are converted, but:
-    the functions are in the cpu/avr folder. It would be better if the functions could be in the platform/avr-atmega128rfa1 folder.
-    the functions use variables in the <avr/io.h> file - the necessary ones should be extracted from there and defined in the file itself.
-    there's a sort of event-based button functionality already built into Contiki, and the way I've implemented the button doesn't use that.
-
-  working on serial now, not as straightforward as the initial libraries
+- Convert button, led, serial and timer libraries to Contiki (integrate them into the rfa1 cpu and platform Contiki folders and use from there).
 
 LEDS - done, but should move changes from leds.c to leds-arch. Also, leds_get just returns positive if a led is on, negative if all leds are off. Need to fix, but should be an easy fix. 
 
 BUTTON - done! Pretty sure it works, but requires more testing.
 
-SERIAL - one works, the other doesn't. Today
+SERIAL - one works, the other doesn't. I don't see why though? Going to try use the external serial library, just to ensure I've connected the rn to the correct port.
 
 RADIO - to be tested, but probably won't work from the off.
+
+TIMER - to be tested, but probably won't work from the off.

@@ -57,19 +57,22 @@ PROCESS_THREAD(example_process, ev, data)
 
 	serial_line_init();
 
+  rs232_set_input(RS232_PORT_0,serial_line_input_byte);
+  rs232_set_input(RS232_PORT_1,serial_line_input_byte);
+
 	PROCESS_BEGIN();
 
 	watchdog_stop();
 
-	rs232_print(0, "ATMega128RFA1 Serial Relay\n\r");
-	rs232_print(1, "mac get adr\n\r");
+	rs232_print(RS232_PORT_0, "ATMega128RFA1 Serial Relay\n\r");
+	rs232_print(RS232_PORT_1, "mac get adr\n\r");
 
 	volatile int running = 1;
 
     while (running)
     {
     	rs232_print(0, "In loop\n\r");
-     	PROCESS_YIELD();  	
+     	PROCESS_YIELD();  	//this should wait for a specific event
      	rs232_print(0, "Past yield!\n\r");
      	if(ev == serial_line_event_message) {
        		//TODO: Instead of doing this, it should pass on the message to the other board
@@ -79,6 +82,8 @@ PROCESS_THREAD(example_process, ev, data)
        		rs232_print(RS232_PORT_0, "\n\r");
 
        		rs232_print(RS232_PORT_1, (char *)data);
+
+          rs232_print(RS232_PORT_1, "mac get adr\n\r");
        		//rs232_print(RS232_PORT_1, "\n\r");
     	}
    	}
@@ -107,7 +112,7 @@ PROCESS_THREAD(button_process, ev, data)
   leds_on(LEDS_YELLOW);
   leds_on(LEDS_RED);
   
-	volatile int on = 1;
+	//volatile int on = 1;
 	
 	while(1) {
 
@@ -119,14 +124,12 @@ PROCESS_THREAD(button_process, ev, data)
 			      leds_off(LEDS_GREEN);
             leds_off(LEDS_YELLOW);
             leds_off(LEDS_RED);
-            on = 0;
     	}
     	else
     	{
     		    leds_on(LEDS_GREEN);
             leds_on(LEDS_YELLOW);
             leds_on(LEDS_RED);
-            on = 1;
     	}
     }
     PROCESS_END();
