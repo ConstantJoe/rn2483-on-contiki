@@ -38,9 +38,7 @@
 #include "dev/uart1.h"
 #include "dev/serial-line.h"
 #include "dev/button-sensor.h"
-
-#define true 1
-#define BUFSIZE 128
+//#include "lib/sensors.h"
 
 /*---------------------------------------------------------------------------*/
 PROCESS(example_process, "Main process");
@@ -49,12 +47,13 @@ PROCESS(button_process, "Button process");
 //process_event_t serial_line_event_message; //do NOT redefine this event here
 
 AUTOSTART_PROCESSES(&example_process, &button_process);
+
 /*---------------------------------------------------------------------------*/
 
 PROCESS_THREAD(example_process, ev, data)
 {
-	rs232_set_input(RS232_PORT_0, serial_line_input_byte);
-	rs232_set_input(RS232_PORT_1, serial_line_input_byte);
+	//rs232_set_input(RS232_PORT_0, serial_line_input_byte);
+	//rs232_set_input(RS232_PORT_1, serial_line_input_byte);
 
 	serial_line_init();
 
@@ -63,6 +62,7 @@ PROCESS_THREAD(example_process, ev, data)
 	watchdog_stop();
 
 	rs232_print(0, "ATMega128RFA1 Serial Relay\n\r");
+	rs232_print(1, "mac get adr\n\r");
 
 	volatile int running = 1;
 
@@ -79,7 +79,7 @@ PROCESS_THREAD(example_process, ev, data)
        		rs232_print(RS232_PORT_0, "\n\r");
 
        		rs232_print(RS232_PORT_1, (char *)data);
-       		rs232_print(RS232_PORT_1, "\n\r");
+       		//rs232_print(RS232_PORT_1, "\n\r");
     	}
    	}
    	PROCESS_END();
@@ -91,17 +91,18 @@ PROCESS_THREAD(button_process, ev, data)
 	
 	SENSORS_ACTIVATE(button_sensor);
 
+	//AUTOSTART_PROCESSES(&sensors_process);
+
 	watchdog_stop();
 
 	rs232_set_input(RS232_PORT_0, serial_line_input_byte);
 
-	serial_line_init();
 	leds_init();
 
-	leds_on(LEDS_GREEN);
-    leds_on(LEDS_YELLOW);
-    leds_on(LEDS_RED);
-
+  leds_on(LEDS_GREEN);
+  leds_on(LEDS_YELLOW);
+  leds_on(LEDS_RED);
+  
 	volatile int on = 1;
 	
 	while(1) {
