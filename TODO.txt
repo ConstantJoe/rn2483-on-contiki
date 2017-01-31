@@ -10,3 +10,11 @@
     there's a sort of event-based button functionality already built into Contiki, and the way I've implemented the button doesn't use that.
 
   working on serial now, not as straightforward as the initial libraries
+
+LEDS - done, but should move changes from leds.c to leds-arch. Also, leds_get just returns positive if a led is on, negative if all leds are off. Need to fix, but should be an easy fix. 
+
+BUTTON - done! Pretty sure it works, but requires more testing.
+
+SERIAL - one works, the other doesn't. Today
+
+RADIO - to be tested, but probably won't work from the off.

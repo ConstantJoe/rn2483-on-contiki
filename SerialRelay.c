@@ -89,6 +89,10 @@ PROCESS_THREAD(button_process, ev, data)
 {
 	PROCESS_BEGIN();
 	
+  
+
+  process_start(&sensors_process, NULL);
+
 	SENSORS_ACTIVATE(button_sensor);
 
 	//AUTOSTART_PROCESSES(&sensors_process);
@@ -107,20 +111,22 @@ PROCESS_THREAD(button_process, ev, data)
 	
 	while(1) {
 
-		rs232_print(0, "waiting for button press\n\r");
-    	PROCESS_WAIT_EVENT_UNTIL(ev == sensors_event && data == &button_sensor);
+		  rs232_print(0, "waiting for button press\n\r");
+    	PROCESS_WAIT_EVENT_UNTIL((ev==sensors_event) && (data == &button_sensor));
     	rs232_print(0, "flipping leds\n\r");
-    	if(on)
+    	if(leds_get())
     	{
-			leds_off(LEDS_GREEN);
+			      leds_off(LEDS_GREEN);
             leds_off(LEDS_YELLOW);
             leds_off(LEDS_RED);
+            on = 0;
     	}
     	else
     	{
-    		leds_on(LEDS_GREEN);
+    		    leds_on(LEDS_GREEN);
             leds_on(LEDS_YELLOW);
             leds_on(LEDS_RED);
+            on = 1;
     	}
     }
     PROCESS_END();
