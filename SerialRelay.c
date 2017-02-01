@@ -14,17 +14,19 @@
 #include "dev/uart1.h"
 #include "dev/serial-line.h"
 #include "dev/button-sensor.h"
-//#include "lib/sensors.h"
+#include "sys/etimer.h"
+
 
 /*---------------------------------------------------------------------------*/
-PROCESS(example_process, "Main process");
+PROCESS(relay_process, "Relay process");
 PROCESS(button_process, "Button process");
+PROCESS(timer_process, "Timer process");
 
-AUTOSTART_PROCESSES(&example_process, &button_process);
+AUTOSTART_PROCESSES(&relay_process, &button_process, &timer_process);
 
 /*---------------------------------------------------------------------------*/
-
-PROCESS_THREAD(example_process, ev, data)
+/*process which shows example of use of serial relay*/
+PROCESS_THREAD(relay_process, ev, data)
 {
 
 	serial_line_init();
@@ -66,6 +68,8 @@ PROCESS_THREAD(example_process, ev, data)
    	PROCESS_END();
 }
 
+/*---------------------------------------------------------------------------*/
+/*process which should example of use of button*/
 PROCESS_THREAD(button_process, ev, data)
 {
 	PROCESS_BEGIN();
@@ -98,6 +102,33 @@ PROCESS_THREAD(button_process, ev, data)
             leds_on(LEDS_YELLOW);
             leds_on(LEDS_RED);
     	}
+    }
+    PROCESS_END();
+}
+
+/*---------------------------------------------------------------------------*/
+/*Process which shows example of use of timers*/
+PROCESS_THREAD(timer_process, ev, data)
+{
+  static struct etimer et;
+  PROCESS_BEGIN();
+  
+  serial_line_init();
+
+  rs232_set_input(RS232_PORT_0,serial_line_input_byte_0);
+
+  /* Delay 10 seconds */
+  etimer_set(&et, CLOCK_SECOND*10);
+  
+  while(1) {
+
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
+     
+      rs232_print(RS232_PORT_0, "Timer expired!\r\n");
+
+      /* Reset the etimer to trigger again in 10 seconds */
+      etimer_reset(&et);
+
     }
     PROCESS_END();
 }

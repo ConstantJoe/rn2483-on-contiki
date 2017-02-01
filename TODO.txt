@@ -6,10 +6,12 @@ LEDS - done, but should move changes from leds.c to leds-arch. Also, leds_get ju
 
 BUTTON - done! Pretty sure it works, but requires more testing.
 
-SERIAL - Works now, but is extremely messy. Needs a cleanup and refactoring (need to see if theres a way to only use one process for serial line).
+SERIAL - Works now, but is quite messy. Needs a cleanup and refactoring (need to see if theres a way to only use one process for serial line).
 
-RADIO - to be tested, but probably won't work from the off.
+RADIO - Going to test out the old rfa1 libraries first, see if I can call them properly from Contiki. Then I'll check out the cpu/avr/radio files (especially HAL) to see if the work's already been done.
 
-TIMER - to be tested, but probably won't work from the off.
+TIMER - Timers look to be implemented!
+	- Here's the official tutorial on use of timers:
+	- https://github.com/contiki-os/contiki/wiki/Timers#The_Timer_Library
 
 Also, cleanup in general needed.
