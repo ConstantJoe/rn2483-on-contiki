@@ -44,28 +44,24 @@
 PROCESS(example_process, "Main process");
 PROCESS(button_process, "Button process");
 
-//process_event_t serial_line_event_message; //do NOT redefine this event here
-
 AUTOSTART_PROCESSES(&example_process, &button_process);
 
 /*---------------------------------------------------------------------------*/
 
 PROCESS_THREAD(example_process, ev, data)
 {
-	//rs232_set_input(RS232_PORT_0, serial_line_input_byte);
-	//rs232_set_input(RS232_PORT_1, serial_line_input_byte);
 
 	serial_line_init();
 
-  rs232_set_input(RS232_PORT_0,serial_line_input_byte);
-  rs232_set_input(RS232_PORT_1,serial_line_input_byte);
+  rs232_set_input(RS232_PORT_0,serial_line_input_byte_0);
+  rs232_set_input(RS232_PORT_1,serial_line_input_byte_1);
 
 	PROCESS_BEGIN();
 
 	watchdog_stop();
 
 	rs232_print(RS232_PORT_0, "ATMega128RFA1 Serial Relay\n\r");
-	rs232_print(RS232_PORT_1, "mac get adr\n\r");
+	rs232_print(RS232_PORT_1, "mac set adr on\n\r");
 
 	volatile int running = 1;
 
@@ -76,14 +72,14 @@ PROCESS_THREAD(example_process, ev, data)
      	rs232_print(0, "Past yield!\n\r");
      	if(ev == serial_line_event_message) {
        		//TODO: Instead of doing this, it should pass on the message to the other board
-       		//Is there a way to know where its coming from?
+       		//Is there a way to know where its coming from? - yes, make 2 serial_line_input_byte functions and give each rs232 a different callback.
        		rs232_print(RS232_PORT_0, "received line:\n\r");
        		rs232_print(RS232_PORT_0, (char *)data);
        		rs232_print(RS232_PORT_0, "\n\r");
 
-       		rs232_print(RS232_PORT_1, (char *)data);
+       		//rs232_print(RS232_PORT_1, (char *)data);
 
-          rs232_print(RS232_PORT_1, "mac get adr\n\r");
+          //rs232_print(RS232_PORT_1, "mac get adr\n\r");
        		//rs232_print(RS232_PORT_1, "\n\r");
     	}
    	}
@@ -103,8 +99,6 @@ PROCESS_THREAD(button_process, ev, data)
 	//AUTOSTART_PROCESSES(&sensors_process);
 
 	watchdog_stop();
-
-	rs232_set_input(RS232_PORT_0, serial_line_input_byte);
 
 	leds_init();
 
