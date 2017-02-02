@@ -12,7 +12,7 @@
 #include "dev/leds.h"
 #include "dev/rs232.h"
 #include "dev/uart1.h"
-#include "dev/serial-line.h"
+#include "serial-line-dual.h"
 #include "dev/button-sensor.h"
 #include "sys/etimer.h"
 #include "radio/rf230bb/rf230bb.c"
