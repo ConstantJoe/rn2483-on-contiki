@@ -8,14 +8,17 @@
 #include "watchdog.h"
 #include "libs/timer.h"
 
-//files located in avr/cpu folder of contiki
+//files located in cpu/avr folder of contiki
 #include "dev/leds.h"
 #include "dev/rs232.h"
 #include "dev/uart1.h"
 #include "dev/serial-line.h"
 #include "dev/button-sensor.h"
 #include "sys/etimer.h"
+#include "radio/rf230bb/rf230bb.c"
 
+//#include "libs/hw_timer.h" 
+//#include "libs/radio.h"  
 
 /*---------------------------------------------------------------------------*/
 PROCESS(relay_process, "Relay process");
@@ -107,7 +110,7 @@ PROCESS_THREAD(button_process, ev, data)
 }
 
 /*---------------------------------------------------------------------------*/
-/*Process which shows example of use of timers*/
+/*Process which shows example of use of timers, and of radio send*/
 PROCESS_THREAD(timer_process, ev, data)
 {
   static struct etimer et;
@@ -119,13 +122,34 @@ PROCESS_THREAD(timer_process, ev, data)
 
   /* Delay 10 seconds */
   etimer_set(&et, CLOCK_SECOND*10);
-  
+
+  //radio_init(0x01, false);
+  //radio_set_power(15);
+  //radio_start();
+
+  rf230_init();
+
+  //set_txpower(15);
+
   while(1) {
 
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
      
       rs232_print(RS232_PORT_0, "Timer expired!\r\n");
 
+      int succ = rf230_send("test",4);
+
+      if(succ)
+      {
+        rs232_print(RS232_PORT_0, "Transmit successful!\r\n");
+      }
+      else
+      {
+        rs232_print(RS232_PORT_0, "Transmit failed!\r\n");
+      }
+      //char* testMessage = "test";
+      //memcpy(&tx_buffer, &testMessage, sizeof(testMessage));
+      //radio_send(tx_buffer, sizeof(testMessage), 0xFF);
       /* Reset the etimer to trigger again in 10 seconds */
       etimer_reset(&et);
 
