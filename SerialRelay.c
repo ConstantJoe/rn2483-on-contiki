@@ -2,23 +2,19 @@
   Written by J. Finnegan.
 */
 
-#include <stdio.h>
-#include <string.h>
-#include "contiki.h"
+//#include <stdio.h>
+//#include <string.h>
+//#include "contiki.h"
 #include "watchdog.h"
-#include "libs/timer.h"
+//#include "libs/timer.h"
 
-//files located in cpu/avr folder of contiki
 #include "dev/leds.h"
 #include "dev/rs232.h"
-#include "dev/uart1.h"
+//#include "dev/uart1.h"
 #include "serial-line-dual.h"
 #include "dev/button-sensor.h"
-#include "sys/etimer.h"
+//#include "sys/etimer.h"
 #include "radio/rf230bb/rf230bb.c"
-
-//#include "libs/hw_timer.h" 
-//#include "libs/radio.h"  
 
 /*---------------------------------------------------------------------------*/
 PROCESS(relay_process, "Relay process");
@@ -93,7 +89,7 @@ PROCESS_THREAD(button_process, ev, data)
 
     	PROCESS_WAIT_EVENT_UNTIL((ev==sensors_event) && (data == &button_sensor));
 
-    	if(leds_get())
+    	if(leds_get() == 0b00011100)
     	{
 			      leds_off(LEDS_GREEN);
             leds_off(LEDS_YELLOW);
@@ -123,13 +119,7 @@ PROCESS_THREAD(timer_process, ev, data)
   /* Delay 10 seconds */
   etimer_set(&et, CLOCK_SECOND*10);
 
-  //radio_init(0x01, false);
-  //radio_set_power(15);
-  //radio_start();
-
   rf230_init();
-
-  //set_txpower(15);
 
   while(1) {
 
