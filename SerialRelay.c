@@ -147,10 +147,7 @@ PROCESS_THREAD(timer_process, ev, data)
       {
         rs232_print(RS232_PORT_0, "Transmit failed!\r\n");
       }
-      //char* testMessage = "test";
-      //memcpy(&tx_buffer, &testMessage, sizeof(testMessage));
-      //radio_send(tx_buffer, sizeof(testMessage), 0xFF);
-      /* Reset the etimer to trigger again in 10 seconds */
+      
       etimer_reset(&et);
 
     }
